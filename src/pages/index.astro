@@ -5,17 +5,12 @@ import MemeContainer from "../components/MemeContainer.jsx";
 ---
 
 <Layout title="Welcome to Astro.">
-  <main>
-    <MemeContainer client:load />
+  <main class="min-h-screen">
+    <MemeContainer client:only />
   </main>
 </Layout>
 
 <style>
-  main {
-    margin: auto;
-    padding: 1.5rem;
-    max-width: 60ch;
-  }
   h1 {
     font-size: 3rem;
     font-weight: 800;
