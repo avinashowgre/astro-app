@@ -25,7 +25,7 @@ export default function MemeUploader(props) {
       style={{
         top: 0,
         left: 0,
-        position: "absolute",
+        position: "relative",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

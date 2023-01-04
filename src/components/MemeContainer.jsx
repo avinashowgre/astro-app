@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 
+import Caption from "./Caption";
 import MemeUploader from "./MemeUploader";
 import MemePreview from "./MemePreview";
 
@@ -31,7 +32,11 @@ export default function MemeContainer() {
             <MemeUploader onFileInput={setImgUrl} />
           )}
         </div>
-        <div className="w-1/3 ">column2</div>
+        <div className="w-1/4 ">
+          <div className="container mx-auto">
+            <Caption />
+          </div>
+        </div>
       </div>
     </div>
   );
