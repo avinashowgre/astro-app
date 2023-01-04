@@ -69,8 +69,6 @@ export default function Caption(props) {
 
       <button
         className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-sm text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 "
-        data-popover-target="more-options"
-        data-popover-trigger="click"
         type="button"
       >
         <i className="glyphicon glyphicon-trash"></i>
