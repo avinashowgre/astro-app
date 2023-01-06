@@ -83,6 +83,7 @@ function MemePreview(props, ref) {
       id={TEST_ID}
       style={{
         border: "1px solid black",
+        margin: "auto",
         maxWidth: "100%",
         height: "auto",
       }}

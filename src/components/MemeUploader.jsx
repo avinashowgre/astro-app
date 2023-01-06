@@ -22,6 +22,7 @@ export default function MemeUploader(props) {
 
   return (
     <div
+      className="border"
       style={{
         top: 0,
         left: 0,
