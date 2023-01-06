@@ -44,7 +44,7 @@ export default function MemeContainer() {
   }
 
   return (
-    <div className="container mx-auto min-h-full py-10">
+    <div className="container mx-auto min-h-screen py-10">
       <div className="flex flex-row h-full relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:px-10">
         <div className="w-2/3 flex flex-col gap-4 ">
           <input
@@ -88,7 +88,12 @@ export default function MemeContainer() {
           <div className="container mx-auto">
             {imgUrl && (
               <div className="flex flex-col">
-                <IconButton className="mb-2" size="lg" onClick={addCaption}>
+                <IconButton
+                  className="mb-2"
+                  size="lg"
+                  onClick={addCaption}
+                  disabled={captions.length >= 4}
+                >
                   <i className="glyphicon glyphicon-plus" />
                 </IconButton>
                 <div>

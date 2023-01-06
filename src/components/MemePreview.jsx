@@ -43,13 +43,12 @@ function MemePreview(props, ref) {
     const image = new Image();
 
     image.onload = () => {
+      ref.current.width = image.width;
+      ref.current.height = image.height;
+
       var bitmap = new Bitmap(image);
-      bitmap.scaleX = ref.current.width / image.width;
-      bitmap.scaleY = ref.current.height / image.height;
 
       canvasStage.addChild(bitmap);
-
-      console.log(captions);
 
       captions.forEach((caption, index) => {
         const { color, font, fontFamily, fontSize, text, x, y } = caption;
