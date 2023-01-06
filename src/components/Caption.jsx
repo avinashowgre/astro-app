@@ -1,79 +1,154 @@
-import React, { createRef, useState } from "react";
-import { createPopper } from "@popperjs/core";
+import React, { useEffect, useState } from "react";
 
-function MoreOptionsMenu() {
-  const [popoverShow, setPopoverShow] = useState(false);
-  const btnRef = createRef();
-  const popoverRef = createRef();
+import {
+  IconButton,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
 
-  const openPopover = () => {
-    createPopper(btnRef.current, popoverRef.current, {
-      placement: "top",
+function MoreOptionsMenu(props) {
+  const { onStyleChange, styles } = props;
+  const { color, font } = styles;
+  const [fontStyles, setFontStyles] = useState({
+    bold: false,
+    color: "",
+    italic: false,
+  });
+
+  useEffect(() => {
+    const { bold, color, italic } = fontStyles;
+    let font = ``;
+
+    if (bold) {
+      font += ` bold`;
+    }
+
+    if (italic) {
+      font += ` italic`;
+    }
+
+    onStyleChange({
+      font,
+      color,
     });
-    setPopoverShow(true);
-  };
-  const closePopover = () => {
-    setPopoverShow(false);
-  };
+  }, [fontStyles]);
+
+  function handleFontStyleChange(font) {
+    setFontStyles((prevState) => {
+      return {
+        ...prevState,
+        ...font,
+      };
+    });
+  }
 
   return (
-    <>
-      <button
-        className="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-sm text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-        data-popover-target="more-options"
-        data-popover-trigger="click"
-        onClick={() => {
-          popoverShow ? closePopover() : openPopover();
-        }}
-        ref={btnRef}
-        type="button"
-      >
-        <i className="glyphicon glyphicon-menu-hamburger"></i>
-        <span className="sr-only">more options</span>
-      </button>
-      <div
-        data-popover
-        id="more-options"
-        role="tooltip"
-        className={
-          (popoverShow ? "" : "hidden ") +
-          "absolute z-10  inline-block w-64 text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800"
-        }
-        ref={popoverRef}
-      >
-        <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-          <h3 className="font-semibold text-gray-900 dark:text-white">
-            Popover title
-          </h3>
+    <Popover
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 },
+      }}
+    >
+      <PopoverHandler>
+        <IconButton size="lg">
+          <i className="glyphicon glyphicon-menu-hamburger" />
+        </IconButton>
+      </PopoverHandler>
+      <PopoverContent>
+        <div className="inline-flex ">
+          <div className="flex mr-2">
+            <input
+              type="checkbox"
+              id="font-bold"
+              className="peer hidden"
+              onChange={(e) =>
+                handleFontStyleChange({ bold: e.target.checked })
+              }
+              checked={font.indexOf("bold") > -1}
+            />
+            <label
+              htmlFor="font-bold"
+              className="select-none cursor-pointer text-black border-black rounded border border-gray-200
+   py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
+            >
+              <i className="glyphicon glyphicon-bold"></i>
+            </label>
+          </div>
+
+          <div className="flex mr-2">
+            <input
+              type="checkbox"
+              id="font-italic"
+              className="peer hidden"
+              onChange={(e) =>
+                handleFontStyleChange({ italic: e.target.checked })
+              }
+              checked={font.indexOf("italic") > -1}
+            />
+            <label
+              htmlFor="font-italic"
+              className="select-none cursor-pointer text-black border-black rounded border border-gray-200
+   py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
+            >
+              <i className="glyphicon glyphicon-italic"></i>
+            </label>
+          </div>
+
+          <input
+            className="border"
+            type="color"
+            id="color-picker"
+            name="body"
+            onChange={(e) => handleFontStyleChange({ color: e.target.value })}
+            style={{
+              cursor: "pointer",
+              margin: 4,
+            }}
+            value={color}
+          />
         </div>
-        <div className="px-3 py-2">
-          <p>And here's some amazing content. It's very engaging. Right?</p>
-        </div>
-        <div data-popper-arrow></div>
-      </div>
-    </>
+      </PopoverContent>
+    </Popover>
   );
 }
 
 export default function Caption(props) {
+  const { caption, onCaptionChange, removeCaption } = props;
+  const { color, font } = caption;
+
+  function handleInputChange(text) {
+    onCaptionChange({
+      ...caption,
+      text,
+    });
+  }
+
+  function handleStyleChange(styles) {
+    onCaptionChange({
+      ...caption,
+      ...styles,
+    });
+  }
+
   return (
-    <div className="flex flex-row basis-full space-x-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-row basis-full space-x-2 mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <input
+        className="block w-full p-2 text-gray-900 rounded-sm border border-gray-300 bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        id="small-input"
+        onInput={(e) => handleInputChange(e.target.value)}
         placeholder="Add Caption"
         type="text"
-        id="small-input"
-        className="block w-full p-2 text-gray-900 rounded-sm border border-gray-300 bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
       />
 
-      <MoreOptionsMenu />
+      <MoreOptionsMenu
+        styles={{ color, font }}
+        onStyleChange={handleStyleChange}
+      />
 
-      <button
-        className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-sm text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 "
-        type="button"
-      >
-        <i className="glyphicon glyphicon-trash"></i>
-        <span className="sr-only">delete caption</span>
-      </button>
+      <IconButton size="lg" color="red" onClick={removeCaption}>
+        <i className="glyphicon glyphicon-trash" />
+      </IconButton>
     </div>
   );
 }

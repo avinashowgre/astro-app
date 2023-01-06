@@ -29,7 +29,7 @@ function MemePreview(props, ref) {
     if (onCaptionChange) {
       const { text, x, y } = evt.target;
       onCaptionChange(index, {
-        ...texts[index],
+        ...captions[index],
         text,
         x,
         y,
@@ -49,13 +49,15 @@ function MemePreview(props, ref) {
 
       canvasStage.addChild(bitmap);
 
+      console.log(captions);
+
       captions.forEach((caption, index) => {
         const { color, font, fontFamily, fontSize, text, x, y } = caption;
         let createText = new Text();
         createText.set({
           color,
           text,
-          font: `${font} ${fontSize}px ${fontFamily}`,
+          font: `${font.trim()} ${fontSize}px ${fontFamily}`,
           lineWidth: canvasStage.canvas.width,
           lineHeight: 20 * index,
           textBaseline: "top",
@@ -84,8 +86,9 @@ function MemePreview(props, ref) {
       style={{
         border: "1px solid black",
         margin: "auto",
+        minWidth: "100%",
         maxWidth: "100%",
-        height: "auto",
+        maxHeight: "100%",
       }}
       width="500"
     ></canvas>
