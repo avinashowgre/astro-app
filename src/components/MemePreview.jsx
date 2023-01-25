@@ -53,6 +53,7 @@ function MemePreview(props, ref) {
       captions.forEach((caption, index) => {
         const { color, font, fontFamily, fontSize, text, x, y } = caption;
         let createText = new Text();
+
         createText.set({
           color,
           text,

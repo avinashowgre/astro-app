@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import {
+  Button,
   IconButton,
   Popover,
   PopoverHandler,
@@ -9,7 +10,7 @@ import {
 
 function MoreOptionsMenu(props) {
   const { onStyleChange, styles } = props;
-  const { color, font } = styles;
+  const { color, font, fontSize } = styles;
   const [fontStyles, setFontStyles] = useState({
     bold: false,
     color: "",
@@ -17,7 +18,7 @@ function MoreOptionsMenu(props) {
   });
 
   useEffect(() => {
-    const { bold, color, italic } = fontStyles;
+    const { bold, italic, ...others } = fontStyles;
     let font = ``;
 
     if (bold) {
@@ -30,7 +31,7 @@ function MoreOptionsMenu(props) {
 
     onStyleChange({
       font,
-      color,
+      ...others,
     });
   }, [fontStyles]);
 
@@ -42,6 +43,38 @@ function MoreOptionsMenu(props) {
       };
     });
   }
+
+  const FontSizeSlider = (props) => {
+    const { fontSize, onChange } = props;
+
+    return (
+      <Popover
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0, y: 25 },
+        }}
+      >
+        <PopoverHandler>
+          <Button className="border-black border rounded bg-white" size="sm">
+            <img
+              src="https://www.gstatic.com/images/icons/material/system_gm/2x/format_size_black_20dp.png"
+              width="20px"
+              height="20px"
+            />
+          </Button>
+        </PopoverHandler>
+        <PopoverContent>
+          <input
+            id="small-range"
+            type="range"
+            value={fontSize}
+            onChange={onChange}
+            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  };
 
   return (
     <Popover
@@ -69,7 +102,7 @@ function MoreOptionsMenu(props) {
             />
             <label
               htmlFor="font-bold"
-              className="select-none cursor-pointer text-black border-black rounded border border-gray-200
+              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border border-gray-200
    py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
             >
               <i className="glyphicon glyphicon-bold"></i>
@@ -88,12 +121,19 @@ function MoreOptionsMenu(props) {
             />
             <label
               htmlFor="font-italic"
-              className="select-none cursor-pointer text-black border-black rounded border border-gray-200
+              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border border-gray-200
    py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
             >
               <i className="glyphicon glyphicon-italic"></i>
             </label>
           </div>
+
+          <FontSizeSlider
+            fontSize={fontSize}
+            onChange={(e) =>
+              handleFontStyleChange({ fontSize: e.target.valueAsNumber })
+            }
+          />
 
           <input
             className="border"
@@ -115,7 +155,7 @@ function MoreOptionsMenu(props) {
 
 export default function Caption(props) {
   const { caption, onCaptionChange, removeCaption } = props;
-  const { color, font } = caption;
+  const { color, font, fontSize } = caption;
 
   function handleInputChange(text) {
     onCaptionChange({
@@ -142,7 +182,7 @@ export default function Caption(props) {
       />
 
       <MoreOptionsMenu
-        styles={{ color, font }}
+        styles={{ color, font, fontSize }}
         onStyleChange={handleStyleChange}
       />
 

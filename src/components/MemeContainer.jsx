@@ -14,7 +14,7 @@ export default function MemeContainer() {
   function handleCaptionChange(index, caption) {
     const captionsCpy = [...captions];
 
-    captionsCpy[index] = caption;
+    captionsCpy[index] = { ...captionsCpy[index], ...caption };
 
     setCaptions(captionsCpy);
   }
@@ -23,9 +23,9 @@ export default function MemeContainer() {
     e.preventDefault();
 
     const caption = {
-      color: "",
+      color: "#000000",
       font: "",
-      fontFamily: "inherit",
+      fontFamily: "Arial",
       fontSize: 10,
       text: "",
       x: 250,
