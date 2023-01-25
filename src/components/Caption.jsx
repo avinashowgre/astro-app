@@ -65,11 +65,13 @@ function MoreOptionsMenu(props) {
         </PopoverHandler>
         <PopoverContent>
           <input
+            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
             id="small-range"
+            min={10}
+            max={200}
+            onChange={onChange}
             type="range"
             value={fontSize}
-            onChange={onChange}
-            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
           />
         </PopoverContent>
       </Popover>
@@ -174,7 +176,7 @@ export default function Caption(props) {
   return (
     <div className="flex flex-row basis-full space-x-2 mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <input
-        className="block w-full p-2 text-gray-900 rounded-sm border border-gray-300 bg-gray-50 sm:text-xs  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        className="block w-full p-2 text-gray-900 rounded-sm border border-gray-300 bg-gray-50  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         id="small-input"
         onInput={(e) => handleInputChange(e.target.value)}
         placeholder="Add Caption"
