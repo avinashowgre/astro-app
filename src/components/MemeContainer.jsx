@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useMemo, useState } from "react";
 
 import { Button, IconButton } from "@material-tailwind/react";
 
@@ -6,10 +6,41 @@ import Caption from "./Caption";
 import MemeUploader from "./MemeUploader";
 import MemePreview from "./MemePreview";
 
+import { useAsyncQuery } from "../utils/async-query.hook";
+
+import FontsContext from "../utils/FontsContext";
+
+import WebFont from "webfontloader";
+
 export default function MemeContainer() {
   const [imgUrl, setImgUrl] = useState();
   const [captions, setCaptions] = useState([]);
   const canvasRef = useRef();
+
+  const { data, isLoading, error } = useAsyncQuery(
+    `https://www.googleapis.com/webfonts/v1/webfonts?key=${
+      import.meta.env.PUBLIC_GOOGLE_FONTS_API_KEY
+    }`
+  );
+
+  const webFonts = useMemo(() => {
+    if (!data) return [];
+
+    return data.items
+      .map((font) => font.family)
+      .filter((font) => {
+        try {
+          WebFont.load({
+            google: {
+              families: [font],
+            },
+          });
+          return true;
+        } catch (e) {
+          return false;
+        }
+      });
+  }, [data]);
 
   function handleCaptionChange(index, caption) {
     const captionsCpy = [...captions];
@@ -25,8 +56,8 @@ export default function MemeContainer() {
     const caption = {
       color: "#000000",
       font: "",
-      fontFamily: "Arial",
-      fontSize: 10,
+      fontFamily: "Adamina",
+      fontSize: 50,
       text: "",
       x: 250,
       y: 160 + 20 * captions.length,
@@ -41,6 +72,15 @@ export default function MemeContainer() {
     captionsCpy.splice(index, 1);
 
     setCaptions(captionsCpy);
+  }
+
+  function saveMeme() {
+    var win = window.open();
+    win.document.write(
+      '<iframe src="' +
+        canvasRef.current.toDataURL("image/png") +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
+    );
   }
 
   return (
@@ -96,7 +136,7 @@ export default function MemeContainer() {
                 >
                   <i className="glyphicon glyphicon-plus" />
                 </IconButton>
-                <div>
+                <FontsContext.Provider value={webFonts}>
                   {captions.map((caption, index) => (
                     <Caption
                       key={index}
@@ -107,8 +147,12 @@ export default function MemeContainer() {
                       removeCaption={(e) => removeCaption(index)}
                     />
                   ))}
-                </div>
-                <Button variant="filled" disabled={captions.length === 0}>
+                </FontsContext.Provider>
+                <Button
+                  variant="filled"
+                  disabled={captions.length === 0}
+                  onClick={saveMeme}
+                >
                   Save
                 </Button>
               </div>

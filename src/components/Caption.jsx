@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import {
   Button,
   IconButton,
+  Option,
   Popover,
   PopoverHandler,
   PopoverContent,
+  Select,
 } from "@material-tailwind/react";
+
+import FontsContext from "../utils/FontsContext";
 
 function MoreOptionsMenu(props) {
   const { onStyleChange, styles } = props;
-  const { color, font, fontSize } = styles;
+  const { color, font, fontFamily, fontSize } = styles;
   const [fontStyles, setFontStyles] = useState({
     bold: false,
     color: "",
     italic: false,
   });
+
+  const webFonts = useContext(FontsContext);
 
   useEffect(() => {
     const { bold, italic, ...others } = fontStyles;
@@ -104,8 +110,8 @@ function MoreOptionsMenu(props) {
             />
             <label
               htmlFor="font-bold"
-              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border border-gray-200
-   py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
+              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border
+   py-3 px-6 font-bold transition-colors duration-200 peer-checked:bg-gray-200 ease-in-out "
             >
               <i className="glyphicon glyphicon-bold"></i>
             </label>
@@ -123,11 +129,29 @@ function MoreOptionsMenu(props) {
             />
             <label
               htmlFor="font-italic"
-              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border border-gray-200
+              className="m-0 flex items-center justify-center select-none cursor-pointer text-black border-black rounded border
    py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 "
             >
               <i className="glyphicon glyphicon-italic"></i>
             </label>
+          </div>
+
+          <div className="flex mr-2">
+            <select
+              id="countries"
+              className="bg-gray-50 border border-black rounded  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              onChange={(e) =>
+                handleFontStyleChange({ fontFamily: e.target.value })
+              }
+              value={fontFamily}
+            >
+              <option value="">Choose Font</option>
+              {webFonts.map((font, index) => (
+                <option key={index} value={font}>
+                  {font}
+                </option>
+              ))}
+            </select>
           </div>
 
           <FontSizeSlider
@@ -157,7 +181,7 @@ function MoreOptionsMenu(props) {
 
 export default function Caption(props) {
   const { caption, onCaptionChange, removeCaption } = props;
-  const { color, font, fontSize } = caption;
+  const { color, font, fontFamily, fontSize } = caption;
 
   function handleInputChange(text) {
     onCaptionChange({
@@ -184,7 +208,7 @@ export default function Caption(props) {
       />
 
       <MoreOptionsMenu
-        styles={{ color, font, fontSize }}
+        styles={{ color, font, fontFamily, fontSize }}
         onStyleChange={handleStyleChange}
       />
 

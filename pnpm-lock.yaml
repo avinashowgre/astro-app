@@ -13,6 +13,7 @@ specifiers:
   react-dom: ^18.2.0
   react-dropzone: ^14.2.3
   tailwindcss: ^3.2.4
+  webfontloader: ^1.6.28
 
 dependencies:
   '@astrojs/react': 1.2.2_ie75ejlwqy5zh3tldgt7pftwcu
@@ -25,6 +26,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-dropzone: 14.2.3_react@18.2.0
   tailwindcss: 3.2.4
+  webfontloader: 1.6.28
 
 devDependencies:
   '@types/react': 18.0.26
@@ -3920,6 +3922,10 @@ packages:
   /web-streams-polyfill/3.2.1:
     resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
     engines: {node: '>= 8'}
+    dev: false
+
+  /webfontloader/1.6.28:
+    resolution: {integrity: sha512-Egb0oFEga6f+nSgasH3E0M405Pzn6y3/9tOVanv/DLfa1YBIgcv90L18YyWnvXkRbIM17v5Kv6IT2N6g1x5tvQ==}
     dev: false
 
   /which-pm-runs/1.1.0:
