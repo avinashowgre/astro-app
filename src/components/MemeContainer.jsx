@@ -76,7 +76,7 @@ export default function MemeContainer() {
 
   function saveMeme() {
     let link = document.createElement("a");
-    link.download = "meme.png";
+    link.download = `meme-${Date.now()}.png`;
     link.href = canvasRef.current
       .toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
